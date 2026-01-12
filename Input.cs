@@ -68,17 +68,11 @@ namespace FormattazioneSpellForMarkdownProject {
             }
         }
 
-        public static int GetInt(string s)
-        {
-            Console.WriteLine(s);
-            return GetInt();
-        }
-
-        public static int GetInt()
+        public static int GetInt(string s = "")
         {
             try
             {
-                return Int32.Parse(GetString());
+                return Int32.Parse(GetString(s));
             }
             catch (FormatException)
             {

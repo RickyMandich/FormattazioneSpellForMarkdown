@@ -85,7 +85,7 @@ namespace FormattazioneSpellForMarkdownProject
 
         public string ToMarkdown()
         {
-            string ret = $"# {name}\n*";
+            string ret = $"## {name}\n*";
             if (level == 0)
             {
                 ret = $"{ret}Trucchetto,";
