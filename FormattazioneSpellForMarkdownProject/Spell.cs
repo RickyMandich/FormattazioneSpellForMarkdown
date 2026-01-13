@@ -38,7 +38,12 @@ namespace FormattazioneSpellForMarkdownProject
             range = Input.GetString("inserisci il raggio d'azione dell'incantesimo:");
             components = Input.GetString("inserisci i componenti dell'incantesimo: (V, S, M [...])");
             duration = Input.GetString("inserisci la durata dell'incantesimo:");
-            description = Input.GetString("inserisci la descrizione dell'incantesimo:");
+            description = Input.GetString("inserisci il primo paragrafo della descrizione dell'incantesimo:");
+            string line;
+            while(!string.Empty(line = Input.GetString("inserisci il prossimo paragrafo della descrizione dell'incantesimo (se sono finiti lascia vuoto")))
+            {
+                description = $"{description}\n{line}";
+            }
             higherLevels = Input.GetString("inserisci l'effetto ai livelli superiori dell'incantesimo (se non c'è, lascia vuoto):");
             classes = Input.GetString("inserisci le classi nella cui lista è presente questo incantesimo:");
         }

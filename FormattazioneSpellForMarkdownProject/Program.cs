@@ -10,12 +10,13 @@
                     1) creare un incantesimo
                     2) ottenere l'elenco degli incantesimi formattati in markdown
                     3) inserire tutti gli incantesimi creati in un file markdown (work in progress)
+                    4) svuotare l'elenco attuale degli incantesimi
                     0) uscire
                 """;
             bool run = true;
             List<Spell> spells = new List<Spell>();
             while (run) {
-                switch (Input.GetInt(0, 3, opt))
+                switch (Input.GetInt(0, 4, opt))
                 {
                     case 0:
                         run = false;
@@ -31,6 +32,9 @@
                         break;
                     case 3:
                         printToFile(spells);
+                        break;
+                    case 4:
+                        spells = new List<Spell>();
                         break;
                     default:
                         Console.WriteLine("opzione non valida");
