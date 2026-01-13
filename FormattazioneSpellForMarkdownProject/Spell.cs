@@ -40,7 +40,7 @@ namespace FormattazioneSpellForMarkdownProject
             duration = Input.GetString("inserisci la durata dell'incantesimo:");
             description = Input.GetString("inserisci il primo paragrafo della descrizione dell'incantesimo:");
             string line;
-            while(!string.Empty(line = Input.GetString("inserisci il prossimo paragrafo della descrizione dell'incantesimo (se sono finiti lascia vuoto")))
+            while(!string.IsNullOrEmpty(line = Input.GetString("inserisci il prossimo paragrafo della descrizione dell'incantesimo (se sono finiti lascia vuoto")))
             {
                 description = $"{description}\n{line}";
             }
