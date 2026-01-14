@@ -9,7 +9,7 @@
                 cosa vuoi fare?
                     1) creare un incantesimo
                     2) ottenere l'elenco degli incantesimi formattati in markdown
-                    3) inserire tutti gli incantesimi creati in un file markdown (work in progress)
+                    3) inserire tutti gli incantesimi creati in un file markdown
                     4) svuotare l'elenco attuale degli incantesimi
                     0) uscire
                 """;
