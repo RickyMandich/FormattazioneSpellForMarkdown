@@ -18,7 +18,7 @@ namespace FormattazioneSpellForMarkdownProject {
 
         public static string GetString()
         {
-            return Console.ReadLine();
+            return Console.ReadLine() ?? string.Empty;
         }
 
         public static bool GetBool(string s)
