@@ -10,9 +10,9 @@ namespace FormattazioneSpellForMarkdownProject {
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public static string GetString(string s)
+        public static string GetString(string s, ConsoleColor color = ConsoleColor.Blue)
         {
-            WriteColored(s, ConsoleColor.Blue);
+            WriteColored(s, color);
             return GetString();
         }
 
