@@ -40,7 +40,11 @@
                         Console.WriteLine("opzione non valida");
                         break;
                 }
-                if(run == true) Console.Clear();
+                if (run == true)
+                {
+                    Input.WriteColored("premi un tasto per continuare...", ConsoleColor.White);
+                    Console.Clear();
+                }
             }
         }
 
