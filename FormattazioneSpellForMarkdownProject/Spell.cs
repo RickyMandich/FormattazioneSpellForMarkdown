@@ -92,10 +92,10 @@ namespace FormattazioneSpellForMarkdownProject
         }
 
 
-        public bool printToFile(string directory = "incantesimi")
+        public bool printToFile(string directory = "tutti")
         {
             string fileName = ToCamelCase(this.name);
-            string path = $"data/{directory}";
+            string path = $"data/incantesimi/{directory}";
             Directory.CreateDirectory(path);
             fileName = $"{path}/{fileName}.md";
             Console.WriteLine($"salvo l'incantesimo {name} su {fileName}...");
