@@ -65,6 +65,66 @@ namespace FormattazioneSpellForMarkdownProject
             this.classes = classes;
         }
 
+        public static string ToCamelCase(string originalName)
+        {
+            if (string.IsNullOrWhiteSpace(originalName))
+                return string.Empty;
+
+            var parts = originalName
+                .ToLower()
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            if (parts.Length == 0)
+                return string.Empty;
+
+            var result = "";
+
+            for (int i = 0; i < parts.Length; i++)
+            {
+                var part = parts[i];
+                if (part.Length > 0)
+                {
+                    result += char.ToUpper(part[0]) + part.Substring(1);
+                }
+            }
+
+            return result;
+        }
+
+
+        public bool printToFile()
+        {
+            string fileName = ToCamelCase(this.name);
+            fileName = $"../../../data/md/{fileName}.md";
+            Console.WriteLine($"salvo l'incantesimo {name} su {fileName}...");
+            if (File.Exists(fileName))
+            {
+                Input.WriteColored($"attenzione: il file {fileName} esiste già, operazione annullata", ConsoleColor.Red);
+                return false;
+            }
+            StreamWriter? writer = null;
+            try
+            {
+                writer = new StreamWriter(fileName);
+                writer.WriteLine(this.ToMarkdown());
+            }
+            catch (FileNotFoundException)
+            {
+                Console.Error.WriteLine($"file {fileName} non trovato");
+                return false;
+            }
+            catch (IOException)
+            {
+                Console.Error.WriteLine($"errore di lettura/scrittura su {fileName}");
+                return false;
+            }
+            finally
+            {
+                writer?.Close();
+            }
+            return true;
+        }
+
         public override string ToString()
         {
             string ret = "";

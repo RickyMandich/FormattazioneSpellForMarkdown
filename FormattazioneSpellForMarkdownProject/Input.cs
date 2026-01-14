@@ -3,7 +3,7 @@ namespace FormattazioneSpellForMarkdownProject {
 
     internal class Input
     {
-        static void WriteColored(string text, ConsoleColor color)
+        public static void WriteColored(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.WriteLine(text);

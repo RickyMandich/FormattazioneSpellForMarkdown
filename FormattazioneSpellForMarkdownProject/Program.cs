@@ -40,42 +40,16 @@
                         Console.WriteLine("opzione non valida");
                         break;
                 }
+                if(run == true) Console.Clear();
             }
         }
 
-        static bool printToFile(List<Spell> spells)
+        static void printToFile(List<Spell> spells)
         {
-            string fileName = Input.GetString("inserisci il nome del file su cui salvare questa lista di incantesimi: ");
-            if (!fileName.EndsWith(".md"))
+            foreach (Spell spell in spells)
             {
-                fileName = $"{fileName}.md";
+                spell.printToFile();
             }
-            fileName = $"../../../data/md/{DateTime.Now.ToString("yyyy-MM-dd_H-mm-ss")}{fileName}";
-            Console.WriteLine($"salvo il file su {fileName}...");
-            if(File.Exists(fileName))
-            {
-                Console.WriteLine($"attenzione: il file {fileName} esiste già");
-                return false;
-            }
-            StreamWriter? writer = null;
-            try{
-                writer = new StreamWriter(fileName);
-                foreach (Spell spell in spells)
-                {
-                    writer.WriteLine(spell.ToMarkdown());
-                }
-            }catch (FileNotFoundException){
-                Console.Error.WriteLine($"file {fileName} non trovato");
-                return false;
-            }
-            catch (IOException){
-                Console.Error.WriteLine($"errore di lettura/scrittura su {fileName}");
-                return false;
-            }
-            finally{
-                writer?.Close();
-            }
-            return true;
         }
 
         static void Main(string[] args)
