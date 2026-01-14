@@ -53,6 +53,15 @@
             foreach (Spell spell in spells)
             {
                 spell.printToFile();
+                if(Input.GetBool("vuoi salvare questo incantesimo anche in una cartella?"))
+                {
+                    string dir = Input.GetString("inserisci il nome della cartella in cui lo vuoi copiare, se vuoi copiarlo in più di una cartella inserisci più nomi senza spazi separati da `;`");
+                    string[] dirs = dir.Split(';');
+                    foreach (string d in dirs)
+                    {
+                        spell.printToFile(d);
+                    }
+                }
             }
         }
 
