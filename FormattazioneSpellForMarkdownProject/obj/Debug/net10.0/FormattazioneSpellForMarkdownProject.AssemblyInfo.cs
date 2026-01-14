@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FormattazioneSpellForMarkdownProject")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9b7c1db53c2b3c3d2d40fd77d432427e10412268")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+522e4b5af60add11cbb0743f1b538a9af2074f5a")]
 [assembly: System.Reflection.AssemblyProductAttribute("FormattazioneSpellForMarkdownProject")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FormattazioneSpellForMarkdownProject")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

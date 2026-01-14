@@ -92,7 +92,7 @@ namespace FormattazioneSpellForMarkdownProject
         }
 
 
-        public bool printToFile(string directory = "md")
+        public bool printToFile(string directory = "incantesimi")
         {
             string fileName = ToCamelCase(this.name);
             string path = $"data/{directory}";
