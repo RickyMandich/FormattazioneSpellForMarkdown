@@ -3,6 +3,7 @@
     using System;
     internal class Program
     {
+        public static Input.Settings config;
         static void exec()
         {
             string opt = """
@@ -42,7 +43,7 @@
                 }
                 if (run == true)
                 {
-                    Input.WriteColored("premi un tasto per continuare...", ConsoleColor.White);
+                    Input.Pause()
                     Console.Clear();
                 }
             }
@@ -67,42 +68,8 @@
 
         static void Main(string[] args)
         {
-            //List<Spell> spells = new List<Spell>();
-            //spells.Add(new Spell(
-            //    "Palla di fuoco",
-            //    3,
-            //    "Evocazione",
-            //    "1 azione",
-            //    "150 piedi",
-            //    "V, S, M (una piccola palla di guano di pipistrello e zolfo)",
-            //    "Istantaneo",
-            //    "Una esplosione di fuoco scaturisce da un punto che puoi vedere entro gittata e irradia in un raggio di 20 piedi. Ogni creatura nella zona deve effettuare un tiro salvezza su Destrezza. Una creatura subisce 8d6 danni da fuoco se fallisce il tiro salvezza, o la metà dei danni se lo supera. La palla di fuoco ignora la copertura. La palla di fuoco infligge il doppio dei danni ai bersagli in un'area di 20 piedi cubici all'interno dell'area dell'effetto.\n\nIl fuoco si propaga rapidamente e ignora gli ostacoli non infiammabili. Una volta lanciata, la palla di fuoco incenerisce tutto ciò che è infiammabile nella zona.",
-            //    "Gli incantesimi di livello superiore: Quando lanci questo incantesimo usando uno slot incantesimo di 4° livello o superiore, i danni aumentano di 1d6 per ogni livello dello slot oltre il 3°.",
-            //    "Mago, Stregone"
-            //    ));
-            //spells.Add(new Spell(
-            //    "Scudo",
-            //    1,
-            //    "Evocazione",
-            //    "Reazione, che puoi usare quando vieni colpito da un attacco o sei bersaglio di un incantesimo",
-            //    "Personale",
-            //    "V, S",
-            //    "1 round",
-            //    "Un campo magico protettivo si manifesta intorno a te fino all'inizio del tuo prossimo turno. Finché lo scudo è attivo, hai un bonus di +5 alla CA, incluso contro l'attacco che ha attivato questo incantesimo.\n\nLo scudo annulla anche l'effetto dell'incantesimo Missile Magico.",
-            //    "",
-            //    "Mago, Stregone"
-            //    ));
-            //bool success = printToFile(spells);
-            //if (success)
-            //{
-            //    Console.WriteLine("file salvato con successo");
-            //}
-            //else
-            //{
-            //    Console.WriteLine("si è verificato un errore durante il salvataggio del file");
-            //}
-            exec();
-            Input.PauseBeforeExit();
+            config = new Input.Settings();
+            Input.Pause();
         }
     }
 }
