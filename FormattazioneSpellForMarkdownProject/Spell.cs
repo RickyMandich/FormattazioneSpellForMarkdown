@@ -92,7 +92,7 @@ namespace FormattazioneSpellForMarkdownProject
         }
 
 
-        public bool printToFile(string directory = "tutti")
+        public bool printToFile(bool byReference = false, string directory = "tutti")
         {
             string fileName = ToCamelCase(this.name);
             string path = $"data/incantesimi/{directory}";
@@ -108,7 +108,7 @@ namespace FormattazioneSpellForMarkdownProject
             try
             {
                 writer = new StreamWriter(fileName);
-                writer.WriteLine(this.ToMarkdown());
+                writer.WriteLine(byReference ? this.ToObsidianReference() : this.ToMarkdown());
             }
             catch (FileNotFoundException)
             {
@@ -173,6 +173,12 @@ namespace FormattazioneSpellForMarkdownProject
                 ret = $"{ret}**Ai livelli superiori:** {higherLevels}\n\n";
             }
             ret = $"{ret}**Classi:** {classes}\n\n---";
+            return ret;
+        }
+
+        public string ToObsidianReference()
+        {
+            string ret = $"![[tutti/{ToCamelCase(name).ToLower()}]]";
             return ret;
         }
     }

@@ -59,7 +59,7 @@
                     string[] dirs = dir.Split(';');
                     foreach (string d in dirs)
                     {
-                        spell.printToFile(d);
+                        spell.printToFile(true, d);
                     }
                 }
             }
