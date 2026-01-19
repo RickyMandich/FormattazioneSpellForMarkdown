@@ -78,9 +78,17 @@
 
         static void Main(string[] args)
         {
+            bool askToClose = true;
+            if(args.Length > 0 && args[0] == "--no-pause")
+            {
+                askToClose = false;
+            }
             config = new Input.Settings(["OUTPUT_DIRECTORY=data"]);
             exec();
-            Input.Pause();
+            if (askToClose)
+            {
+                Input.Pause();
+            }
         }
     }
 }
