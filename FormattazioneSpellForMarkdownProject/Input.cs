@@ -1,6 +1,7 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
-namespace FormattazioneSpellForMarkdownProject {
+namespace FormattazioneSpellForMarkdownProject{
 
     internal class Input
     {
@@ -9,7 +10,7 @@ namespace FormattazioneSpellForMarkdownProject {
             private readonly string _filePath;
             private readonly Dictionary<string, string> _map;
 
-            internal Settings()
+            internal Settings(string[] optionsNeeded)
             {
                 _filePath = "FormatSpell.config";
                 _map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -45,6 +46,13 @@ namespace FormattazioneSpellForMarkdownProject {
                 {
                     Console.Error.WriteLine($"Failed to read settings file '{_filePath}': {ex.Message}");
                 }
+                foreach (string optionNeeded in optionsNeeded)
+                {
+                    if (!string.IsNullOrEmpty(optionNeeded) && optionNeeded.Contains("=") && optionNeeded.IndexOf("=") > 0)
+                    {
+                        Add(optionNeeded.Split('=')[0], optionNeeded.Split('=')[1]);
+                    }
+                }
             }
 
             /**
@@ -72,6 +80,7 @@ namespace FormattazioneSpellForMarkdownProject {
                     return Add(key, value);
 
                 _map[key] = value ?? string.Empty;
+                Save();
                 return true;
             }
 
@@ -81,8 +90,11 @@ namespace FormattazioneSpellForMarkdownProject {
              */
             public bool Add(string key, string value)
             {
-                if (string.IsNullOrEmpty(key))
+                if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(value))
+                {
+                    Console.WriteLine("impossibile aggiungere un'impostazione con chiave o valore vuoti");
                     return false;
+                }
 
                 if (_map.ContainsKey(key))
                     return false;

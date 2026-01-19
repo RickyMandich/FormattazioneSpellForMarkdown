@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\RickyMandich\\source\\repos\\FormattazioneSpellForMarkdownSolution\\FormattazioneSpellForMarkdownProject\\FormattazioneSpellForMarkdownProject.csproj": {}
+    "C:\\Users\\RickyMandich\\PROJECT\\FormattazioneSpellForMarkdownSolution\\FormattazioneSpellForMarkdownProject\\FormattazioneSpellForMarkdownProject.csproj": {}
   },
   "projects": {
-    "C:\\Users\\RickyMandich\\source\\repos\\FormattazioneSpellForMarkdownSolution\\FormattazioneSpellForMarkdownProject\\FormattazioneSpellForMarkdownProject.csproj": {
+    "C:\\Users\\RickyMandich\\PROJECT\\FormattazioneSpellForMarkdownSolution\\FormattazioneSpellForMarkdownProject\\FormattazioneSpellForMarkdownProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\RickyMandich\\source\\repos\\FormattazioneSpellForMarkdownSolution\\FormattazioneSpellForMarkdownProject\\FormattazioneSpellForMarkdownProject.csproj",
+        "projectUniqueName": "C:\\Users\\RickyMandich\\PROJECT\\FormattazioneSpellForMarkdownSolution\\FormattazioneSpellForMarkdownProject\\FormattazioneSpellForMarkdownProject.csproj",
         "projectName": "FormattazioneSpellForMarkdownProject",
-        "projectPath": "C:\\Users\\RickyMandich\\source\\repos\\FormattazioneSpellForMarkdownSolution\\FormattazioneSpellForMarkdownProject\\FormattazioneSpellForMarkdownProject.csproj",
+        "projectPath": "C:\\Users\\RickyMandich\\PROJECT\\FormattazioneSpellForMarkdownSolution\\FormattazioneSpellForMarkdownProject\\FormattazioneSpellForMarkdownProject.csproj",
         "packagesPath": "C:\\Users\\RickyMandich\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\RickyMandich\\source\\repos\\FormattazioneSpellForMarkdownSolution\\FormattazioneSpellForMarkdownProject\\obj\\",
+        "outputPath": "C:\\Users\\RickyMandich\\PROJECT\\FormattazioneSpellForMarkdownSolution\\FormattazioneSpellForMarkdownProject\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -50,6 +50,14 @@
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
+          "dependencies": {
+            "Microsoft.NET.ILLink.Tasks": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.2, )",
+              "autoReferenced": true
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -61,12 +69,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
+              "version": "[10.0.2, 10.0.2]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.win-x64",
+              "version": "[10.0.2, 10.0.2]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
+              "version": "[10.0.2, 10.0.2]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -341,6 +363,11 @@
             "System.Xml.XPath": "(,4.3.32767]",
             "System.Xml.XPath.XDocument": "(,5.0.32767]"
           }
+        }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
         }
       }
     }

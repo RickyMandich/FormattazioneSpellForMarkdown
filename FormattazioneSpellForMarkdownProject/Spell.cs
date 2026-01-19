@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace FormattazioneSpellForMarkdownProject
 {
     internal class Spell
     {
-        protected string name {get; }
-        protected int level {get; }
-        protected string school {get; }
-        protected string castingTime {get; }
-        protected string range {get; }
-        protected string components {get; }
-        protected string duration {get; }
-        protected string description {get; }
-        protected string higherLevels {get; }
-        protected string classes {get; }
+        protected string name { get; private set; }
+        protected int level { get; private set; }
+        protected string school { get; private set; }
+        protected string castingTime { get; private set; }
+        protected string range { get; private set; }
+        protected string components { get; private set; }
+        protected string duration { get; private set; }
+        protected string description { get; private set; }
+        protected string higherLevels { get; private set; }
+        protected string classes { get; private set; }
 
         /**
          * @param name il nome dell'incantesimo
@@ -46,6 +46,12 @@ namespace FormattazioneSpellForMarkdownProject
             }
             higherLevels = Input.GetString("inserisci l'effetto ai livelli superiori dell'incantesimo (se non c'è, lascia vuoto):");
             classes = Input.GetString("inserisci le classi nella cui lista è presente questo incantesimo:");
+            Console.WriteLine("incantesimo creato:");
+            Console.WriteLine(this.ToMarkdown());
+            if (Input.GetBool("vuoi modificare l'incantesimo?"))
+            {
+                Edit();
+            }
         }
 
         /**
@@ -63,6 +69,79 @@ namespace FormattazioneSpellForMarkdownProject
             this.description = description;
             this.higherLevels = higherLevels;
             this.classes = classes;
+        }
+
+        public void Edit()
+        {
+            string opt = """
+
+                
+                cosa vuoi fare?
+                    1) nome
+                    2) livello
+                    3) scuola
+                    4) tempo di lancio
+                    5) gittata
+                    6) componenti
+                    7) durata
+                    8) descrizione
+                    9) effetto ai livelli superiori
+                    10) classi
+                    0) uscire
+                """;
+            bool run = true;
+            while (run)
+            {
+                switch (Input.GetInt(opt))
+                {
+                    case 0:
+                        run = false;
+                        break;
+                    case 1:
+                        this.name = Input.GetString("inserisci il nuovo nome dell'incantesimo");
+                        break;
+                    case 2:
+                        level = Input.GetInt("inserisci il nuovo livello dell'incantesimo");
+                        break;
+                    case 3:
+                        school = Input.GetString("inserisci la nuova scuola dell'incantesimo");
+                        break;
+                    case 4:
+                        castingTime = Input.GetString("inserisci il nuovo tempo di lancio dell'incantesimo");
+                        break;
+                    case 5:
+                        range = Input.GetString("inserisci la nuova gittata dell'incantesimo");
+                        break;
+                    case 6:
+                        components = Input.GetString("inserisci i nuovi componenti (V, S, M [...])");
+                        break;
+                    case 7:
+                        duration = Input.GetString("inserisci la nuova durata");
+                        break;
+                    case 8:
+                        description = Input.GetString("Inserisci il primo paragrafo della nuova descrizione");
+                        string line;
+                        while (!string.IsNullOrEmpty(line = Input.GetString("inserisci il prossimo paragrafo della nuova descrizione (se sono finiti lascia vuoto)", ConsoleColor.Yellow)))
+                        {
+                            description = $"{description}\n{line}";
+                        }
+                        break;
+                    case 9:
+                        higherLevels = Input.GetString("inserisci il nuovo effetto ai livelli superiori");
+                        break;
+                    case 10:
+                        classes = Input.GetString("inserisci le nuove classi");
+                        break;
+                    default:
+                        Input.WriteColored("opzione non valida", ConsoleColor.Red);
+                        break;
+                }
+                if (run)
+                {
+                    Input.Pause();
+                    Console.Clear();
+                }
+            }
         }
 
         public static string ToCamelCase(string originalName)
@@ -95,7 +174,7 @@ namespace FormattazioneSpellForMarkdownProject
         public bool printToFile(bool byReference = false, string directory = "tutti")
         {
             string fileName = ToCamelCase(this.name);
-            string path = $"data/incantesimi/{directory}";
+            string path = $"{Program.config.Get("OUTPUT_DIRECTORY")}/incantesimi/{directory}";
             Directory.CreateDirectory(path);
             fileName = $"{path}/{fileName}.md";
             Console.WriteLine($"salvo l'incantesimo {name} su {fileName}...");

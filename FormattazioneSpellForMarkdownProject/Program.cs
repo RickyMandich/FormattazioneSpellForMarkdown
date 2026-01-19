@@ -1,6 +1,8 @@
 ﻿namespace FormattazioneSpellForMarkdownProject
 {
     using System;
+    using System.Collections.Generic;
+
     internal class Program
     {
         public static Input.Settings config;
@@ -76,10 +78,8 @@
 
         static void Main(string[] args)
         {
-            config = new Input.Settings();
-            Spell spell = new Spell();
-            Input.WriteColored(spell.ToString(), ConsoleColor.DarkCyan);
-            Input.WriteColored(spell.ToMarkdown(), ConsoleColor.Cyan);
+            config = new Input.Settings(["OUTPUT_DIRECTORY=data"]);
+            exec();
             Input.Pause();
         }
     }
