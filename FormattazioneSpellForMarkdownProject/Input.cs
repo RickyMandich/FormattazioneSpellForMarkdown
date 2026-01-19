@@ -47,6 +47,10 @@ namespace FormattazioneSpellForMarkdownProject {
                 }
             }
 
+            /**
+             * Get the value of a setting by its key.
+             * Returns null if the key does not exist.
+             */
             public string? Get(string key)
             {
                 if (string.IsNullOrEmpty(key))
@@ -55,18 +59,26 @@ namespace FormattazioneSpellForMarkdownProject {
                 return _map.TryGetValue(key, out var value) ? value : null;
             }
 
+            /**
+             * Set the value of an existing setting.
+             * Returns true if the setting was updated, if the key does not exist it create it by the Add method.
+             */
             public bool Set(string key, string value)
             {
                 if (string.IsNullOrEmpty(key))
                     return false;
 
                 if (!_map.ContainsKey(key))
-                    return false;
+                    return Add(key, value);
 
                 _map[key] = value ?? string.Empty;
                 return true;
             }
 
+            /**
+             * Add a new setting.
+             * Returns false if the key already exists.
+             */
             public bool Add(string key, string value)
             {
                 if (string.IsNullOrEmpty(key))
@@ -79,6 +91,10 @@ namespace FormattazioneSpellForMarkdownProject {
                 return true;
             }
 
+            /**
+             * Remove a setting by its key.
+             * Returns false if the key does not exist.
+             */
             public bool Remove(string key)
             {
                 if (string.IsNullOrEmpty(key))
@@ -87,6 +103,9 @@ namespace FormattazioneSpellForMarkdownProject {
                 return _map.Remove(key);
             }
 
+            /**
+             * Save the current settings to the configuration file.
+             */
             public void Save()
             {
                 try
@@ -104,12 +123,91 @@ namespace FormattazioneSpellForMarkdownProject {
                     Console.Error.WriteLine($"Failed to save settings file '{_filePath}': {ex.Message}");
                 }
             }
+
+            /**
+             *  Update an existing option interactively.
+             */
+            private void UpdateAnOption()
+            {
+                Console.WriteLine("impostazioni correnti:");
+                int tot = _map.Count;
+                string[] keys = new string[tot];
+                int i = 0;
+                foreach (var kvp in _map)
+                {
+                    keys[i++] = kvp.Key;
+                    Console.WriteLine($"{i})    {kvp.Key} = {kvp.Value}");
+                }
+                string key = keys[GetInt(0, tot-1, "inserisci l'indice dell'impostazione da modificare (oppure premi invio per uscire):")];
+                string value = GetString($"inserisci il nuovo valore per l'impostazione '{key}':");
+                _map[key] = value;
+                Save();
+                Console.WriteLine("impostazione salvata");
+            }
+
+            /**
+             * Edit the settings interactively.
+             */
+            public void Edit()
+            {
+                string opt = """
+                cosa vuoi fare?
+                    1) modificare un'impostazione
+                    2) aggiungere una nuova impostazione
+                    3) rimuovere un'impostazione
+                    4) vedere tutte le impostazioni
+                    0) uscire da questo menu
+                """;
+                bool run = true;
+                while (run)
+                {
+                    switch (Input.GetInt(0, 5, opt))
+                    {
+                        case 0:
+                            run = false;
+                            break;
+                        case 1:
+                            this.UpdateAnOption();
+                            break;
+                        case 2:
+                            this.Add(Input.GetString("inserisci il nome della nuova impostazione"), Input.GetString("inserisci il valore della nuova impostazione"));
+                            break;
+                        case 3:
+                            this.Remove(Input.GetString("inserisci il nome dell'impostazione da eliminare"));
+                            break;
+                        case 4:
+                            this.ShowSettings();
+                            break;
+                        default:
+                            Console.WriteLine("opzione non valida");
+                            break;
+                    }
+                    if (run == true)
+                    {
+                        Input.Pause();
+                        Console.Clear();
+                    }
+                }
+            }
+
+            /**
+             * show all current settings
+             */
+            private void ShowSettings()
+            {
+                Console.WriteLine("impostazioni correnti:");
+                foreach (var kvp in _map)
+                {
+                    Console.WriteLine($"{kvp.Key} = {kvp.Value}");
+                }
+            }
         }
         public static void WriteColored(string text, ConsoleColor color)
         {
+            ConsoleColor previousColor = Console.ForegroundColor;
             Console.ForegroundColor = color;
             Console.WriteLine(text);
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = previousColor;
         }
 
         public static string GetString(string s, ConsoleColor color = ConsoleColor.Blue)
