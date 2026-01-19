@@ -1,2 +1,4 @@
-*/data/
-*/.vs/
+**/data/
+bin/
+obj/
+.vs/
