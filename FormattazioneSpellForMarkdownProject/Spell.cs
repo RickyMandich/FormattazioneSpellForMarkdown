@@ -16,6 +16,7 @@ namespace FormattazioneSpellForMarkdownProject
         protected string description { get; private set; }
         protected string higherLevels { get; private set; }
         protected string classes { get; private set; }
+        protected string sorgente { get; private set; }
 
         /**
          * @param name il nome dell'incantesimo
@@ -28,6 +29,7 @@ namespace FormattazioneSpellForMarkdownProject
          * @param description la descrizione dell'incantesimo
          * @param higherLevels l'effetto ai livelli superiori dell'incantesimo
          * @param classes le classi nella cui lista è presente questo incantesimo
+         * @param sorgente link alla sorgente dell'incantesimo (opzionale)
          * @constructor Crea un nuovo incantesimo chiedendo all'utente di inserire i vari parametri
          */
         public Spell() {
@@ -46,6 +48,7 @@ namespace FormattazioneSpellForMarkdownProject
             }
             higherLevels = Input.GetString("inserisci l'effetto ai livelli superiori dell'incantesimo (se non c'è, lascia vuoto):");
             classes = Input.GetString("inserisci le classi nella cui lista è presente questo incantesimo:");
+            sorgente = Input.GetString("inserisci il link sorgente dell'incantesimo (se non c'è, lascia vuoto):");
             Console.WriteLine("incantesimo creato:");
             Console.WriteLine(this.ToMarkdown());
             if (Input.GetBool("vuoi modificare l'incantesimo?"))
@@ -57,7 +60,7 @@ namespace FormattazioneSpellForMarkdownProject
         /**
          * create a new Spell asking the params directly to the user
          */
-        public Spell(string name, int level, string school, string castingTime, string range, string components, string duration, string description, string higherLevels, string classes)
+        public Spell(string name, int level, string school, string castingTime, string range, string components, string duration, string description, string higherLevels, string classes, string sorgente)
         {
             this.name = name;
             this.level = level;
@@ -69,13 +72,14 @@ namespace FormattazioneSpellForMarkdownProject
             this.description = description;
             this.higherLevels = higherLevels;
             this.classes = classes;
+            this.sorgente = sorgente;
         }
 
         public void Edit()
         {
             string opt = """
 
-                
+
                 cosa vuoi fare?
                     1) nome
                     2) livello
@@ -87,6 +91,7 @@ namespace FormattazioneSpellForMarkdownProject
                     8) descrizione
                     9) effetto ai livelli superiori
                     10) classi
+                    11) sorgente
                     0) uscire
                 """;
             bool run = true;
@@ -132,6 +137,9 @@ namespace FormattazioneSpellForMarkdownProject
                     case 10:
                         classes = Input.GetString("inserisci le nuove classi");
                         break;
+                    case 11:
+                        sorgente = Input.GetString("inserisci la nuova sorgente (link)");
+                        break;
                     default:
                         Input.WriteColored("opzione non valida", ConsoleColor.Red);
                         break;
@@ -158,12 +166,11 @@ namespace FormattazioneSpellForMarkdownProject
 
             var result = "";
 
-            for (int i = 0; i < parts.Length; i++)
+            foreach (var part in parts)
             {
-                var part = parts[i];
                 if (part.Length > 0)
                 {
-                    result += char.ToUpper(part[0]) + part.Substring(1);
+                    result = $"{result}{(part != parts[0] ? "-" : "")}{part}";
                 }
             }
 
@@ -171,37 +178,51 @@ namespace FormattazioneSpellForMarkdownProject
         }
 
 
-        public bool printToFile(bool byReference = false, string directory = "tutti")
+        public bool printToFile(string directory = "tutti")
         {
+            bool byReference = !directory.Equals("tutti");
             string fileName = ToCamelCase(this.name);
             string path = $"{Program.config.Get("OUTPUT_DIRECTORY")}/incantesimi/{directory}";
             Directory.CreateDirectory(path);
-            fileName = $"{path}/{fileName}.md";
-            Console.WriteLine($"salvo l'incantesimo {name} su {fileName}...");
+            string filePath = $"{path}/{fileName}.md";
+            Console.WriteLine($"salvo l'incantesimo {name} su {filePath}...");
             if (File.Exists(fileName))
             {
-                Input.WriteColored($"attenzione: il file {fileName} esiste già, operazione annullata", ConsoleColor.Red);
+                Input.WriteColored($"attenzione: il file {filePath} esiste già, operazione annullata", ConsoleColor.Red);
                 return false;
             }
             StreamWriter? writer = null;
             try
             {
-                writer = new StreamWriter(fileName);
+                writer = new StreamWriter(filePath);
                 writer.WriteLine(byReference ? this.ToObsidianReference() : this.ToMarkdown());
-            }
-            catch (FileNotFoundException)
-            {
-                Console.Error.WriteLine($"file {fileName} non trovato");
-                return false;
             }
             catch (IOException)
             {
-                Console.Error.WriteLine($"errore di lettura/scrittura su {fileName}");
+                Console.Error.WriteLine($"errore di lettura/scrittura su {filePath}");
                 return false;
             }
             finally
             {
                 writer?.Close();
+            }
+            if (!byReference)
+            {
+                string backupFilePath = $"data/incantesimi/{fileName}.md";
+                try
+                {
+                    writer = new StreamWriter(backupFilePath);
+                    writer.WriteLine(this.ToMarkdown());
+                }
+                catch (IOException)
+                {
+                    Console.Error.WriteLine($"errore di lettura/scrittura su {backupFilePath}");
+                    return false;
+                }
+                finally
+                {
+                    writer?.Close();
+                }
             }
             return true;
         }
@@ -219,13 +240,26 @@ namespace FormattazioneSpellForMarkdownProject
                 Durata:             {duration}
                 Descrizione:        {description}
                 <higherLevels>Classi:{classes}
+                <source>
                 """;
-            if(!string.IsNullOrEmpty(higherLevels))
+            if (!string.IsNullOrEmpty(higherLevels))
             {
                 ret = ret.Replace("<higherLevels>", $"Effetto ai livelli superiori:\t{higherLevels}\n");
-            }else{
+            }
+            else
+            {
                 ret = ret.Replace("<higherLevels>", "");
             }
+
+            if (!string.IsNullOrEmpty(sorgente))
+            {
+                ret = ret.Replace("<source>", $"Sorgente:\t{sorgente}\n");
+            }
+            else
+            {
+                ret = ret.Replace("<source>", "");
+            }
+
             return ret;
         }
 
@@ -251,7 +285,13 @@ namespace FormattazioneSpellForMarkdownProject
             {
                 ret = $"{ret}**Ai livelli superiori:** {higherLevels}\n\n";
             }
-            ret = $"{ret}**Classi:** {classes}\n\n---";
+            ret = $"{ret}**Classi:** {classes}\n\n";
+            if (!string.IsNullOrEmpty(sorgente))
+            {
+                // render link as clickable markdown but show the URL as link text
+                ret = $"{ret}**Sorgente:** [{sorgente}]({sorgente})\n\n";
+            }
+            ret = $"{ret}---";
             return ret;
         }
 

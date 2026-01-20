@@ -116,6 +116,17 @@ namespace FormattazioneSpellForMarkdownProject{
             }
 
             /**
+             * Check if a setting exists by its key.
+             */
+            public bool Has(string key)
+            {
+                if (string.IsNullOrEmpty(key))
+                    return false;
+                return _map.ContainsKey(key);
+
+            }
+
+            /**
              * Save the current settings to the configuration file.
              */
             public void Save()

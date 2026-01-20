@@ -18,6 +18,14 @@
                     6) modificare la cartella di destinazione degli incantesimi
                     0) uscire
                 """;
+            if(config.Has("OUTPUT_DIRECTORY"))
+            {
+                Input.WriteColored($"cartella di destinazione attuale: {config.Get("OUTPUT_DIRECTORY")}\n", ConsoleColor.Green);
+            }
+            else
+            {
+                config.Set("OUTPUT_DIRECTORY", Input.GetString("inserisci la cartella di output (verrà ricordata anche tra esecuzioni diverse)"));
+            }
             bool run = true;
             List<Spell> spells = new List<Spell>();
             while (run) {
@@ -70,7 +78,7 @@
                     string[] dirs = dir.Split(';');
                     foreach (string d in dirs)
                     {
-                        spell.printToFile(true, d);
+                        spell.printToFile(d);
                     }
                 }
             }
