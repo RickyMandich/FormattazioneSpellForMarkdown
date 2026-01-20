@@ -225,6 +225,8 @@ namespace FormattazioneSpellForMarkdownProject{
                 }
             }
         }
+
+        public static bool pause = true;
         public static void WriteColored(string text, ConsoleColor color)
         {
             ConsoleColor previousColor = Console.ForegroundColor;
