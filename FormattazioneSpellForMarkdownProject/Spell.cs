@@ -37,7 +37,7 @@ namespace FormattazioneSpellForMarkdownProject
             level = Input.GetInt("inserisci il livello dell'incantesimo (0 per trucchetto):");
             school = Input.GetString("inserisci la scuola dell'incantesimo:");
             castingTime = Input.GetString("inserisci il tempo di lancio dell'incantesimo:");
-            range = Input.GetString("inserisci il raggio d'azione dell'incantesimo:");
+            range = Input.GetString("inserisci la gittata dell'incantesimo:");
             components = Input.GetString("inserisci i componenti dell'incantesimo: (V, S, M [...])");
             duration = Input.GetString("inserisci la durata dell'incantesimo:");
             description = Input.GetString("inserisci il primo paragrafo della descrizione dell'incantesimo:");
@@ -147,13 +147,14 @@ namespace FormattazioneSpellForMarkdownProject
                 if (run)
                 {
                     Input.Pause();
-                    Console.Clear();
+                    //Console.Clear();
                 }
             }
         }
 
         public static string ToCamelCase(string originalName)
         {
+            originalName = originalName.Replace("'", "");
             if (string.IsNullOrWhiteSpace(originalName))
                 return string.Empty;
 
@@ -185,6 +186,7 @@ namespace FormattazioneSpellForMarkdownProject
             string path = $"{Program.config.Get("OUTPUT_DIRECTORY")}/incantesimi/{directory}";
             Directory.CreateDirectory(path);
             string filePath = $"{path}/{fileName}.md";
+            filePath = Input.SanitizePath(filePath);
             Console.WriteLine($"salvo l'incantesimo {name} su {filePath}...");
             if (File.Exists(fileName))
             {
@@ -208,7 +210,7 @@ namespace FormattazioneSpellForMarkdownProject
             }
             if (!byReference)
             {
-                string backupFilePath = $"data/incantesimi/{fileName}.md";
+                string backupFilePath = Input.SanitizePath($"{Program.config.Get("BACKUP_PATH")}data/incantesimi/{fileName}.md");
                 try
                 {
                     writer = new StreamWriter(backupFilePath);

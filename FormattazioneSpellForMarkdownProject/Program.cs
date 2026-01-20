@@ -6,6 +6,7 @@
     internal class Program
     {
         public static Input.Settings config;
+        public static bool windows; //if true is runned in windows, if false in wsl debian
         static void exec()
         {
             string opt = """
@@ -18,13 +19,21 @@
                     6) modificare la cartella di destinazione degli incantesimi
                     0) uscire
                 """;
-            if(config.Has("OUTPUT_DIRECTORY"))
+            if (config.Has("OUTPUT_DIRECTORY"))
             {
                 Input.WriteColored($"cartella di destinazione attuale: {config.Get("OUTPUT_DIRECTORY")}\n", ConsoleColor.Green);
             }
             else
             {
-                config.Set("OUTPUT_DIRECTORY", Input.GetString("inserisci la cartella di output (verrà ricordata anche tra esecuzioni diverse)"));
+                config.Add("OUTPUT_DIRECTORY", Input.GetString("inserisci la cartella di output (verrà ricordata anche tra esecuzioni diverse)"));
+            }
+            if (config.Has("BACKUP_PATH"))
+            {
+                Input.WriteColored($"cartella di destinazione attuale: {config.Get("BACKUP_PATH")}\n", ConsoleColor.Green);
+            }
+            else
+            {
+                config.Add("BACKUP_PATH", Input.GetString("inserisci la cartella di backup (verrà ricordata anche tra esecuzioni diverse)"));
             }
             bool run = true;
             List<Spell> spells = new List<Spell>();
@@ -62,9 +71,10 @@
                 if (run == true)
                 {
                     Input.Pause();
-                    Console.Clear();
+                    //Console.Clear();
                 }
             }
+            config.Save();
         }
 
         static void printToFile(List<Spell> spells)
@@ -86,11 +96,12 @@
 
         static void Main(string[] args)
         {
+            windows = false;
             if(args.Length > 0 && args[0] == "--no-pause")
             {
                 Input.pause = false;
             }
-            config = new Input.Settings(["OUTPUT_DIRECTORY=data"]);
+            config = new Input.Settings(["OUTPUT_DIRECTORY=data", "SYSTEM_PATH=system"]);
             exec();
             Input.Pause();
         }

@@ -12,7 +12,7 @@ namespace FormattazioneSpellForMarkdownProject{
 
             internal Settings(string[] optionsNeeded)
             {
-                _filePath = "FormatSpell.config";
+                _filePath = SanitizePath("C:/FormatMarkDown/FormatSpell.config");
                 _map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
                 try
@@ -48,7 +48,7 @@ namespace FormattazioneSpellForMarkdownProject{
                 }
                 foreach (string optionNeeded in optionsNeeded)
                 {
-                    if (!string.IsNullOrEmpty(optionNeeded) && optionNeeded.Contains("=") && optionNeeded.IndexOf("=") > 0)
+                    if (!string.IsNullOrEmpty(optionNeeded) && optionNeeded.Contains("=") && optionNeeded.IndexOf("=") > 0 && !Has(optionNeeded.Split("=")[0]))
                     {
                         Add(optionNeeded.Split('=')[0], optionNeeded.Split('=')[1]);
                     }
@@ -100,6 +100,7 @@ namespace FormattazioneSpellForMarkdownProject{
                     return false;
 
                 _map[key] = value ?? string.Empty;
+                Save();
                 return true;
             }
 
@@ -133,12 +134,13 @@ namespace FormattazioneSpellForMarkdownProject{
             {
                 try
                 {
-                    var lines = new System.Collections.Generic.List<string>(_map.Count);
+                    var lines = new List<string>(_map.Count);
+                    lines.Add("# FormattazioneSpellForMarkdownProject settings file");
                     foreach (var kvp in _map)
                     {
                         lines.Add($"{kvp.Key}={kvp.Value}");
                     }
-
+                    Input.WriteColored($"salvataggio delle impostazioni in corso nel file '{_filePath}'...", ConsoleColor.Green);
                     System.IO.File.WriteAllLines(_filePath, lines);
                 }
                 catch (Exception ex)
@@ -208,7 +210,7 @@ namespace FormattazioneSpellForMarkdownProject{
                     if (run == true)
                     {
                         Input.Pause();
-                        Console.Clear();
+                        //Console.Clear();
                     }
                 }
             }
@@ -313,8 +315,21 @@ namespace FormattazioneSpellForMarkdownProject{
 
         public static void Pause()
         {
+            if(!pause) return;
             Console.WriteLine("premi invio per continuare...");
             Console.ReadLine();
+        }
+
+        public static string SanitizePath(string path)
+        {
+            if(Program.windows)
+            {
+                return path.Replace("/", "\\").Replace("/mnt/c", "C:");
+            }
+            else
+            {
+                return path.Replace("\\", "/").Replace("C:", "/mnt/c");
+            }
         }
     }
 }
