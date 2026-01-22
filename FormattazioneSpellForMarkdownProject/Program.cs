@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.InteropServices;
 
     internal class Program
     {
@@ -96,8 +97,9 @@
 
         static void Main(string[] args)
         {
-            windows = false;
-            if(args.Length > 0 && args[0] == "--no-pause")
+            windows = RuntimeInformation
+                                               .IsOSPlatform(OSPlatform.Windows);
+            if (args.Length > 0 && args[0] == "--no-pause")
             {
                 Input.pause = false;
             }

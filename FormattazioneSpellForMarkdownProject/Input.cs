@@ -248,21 +248,23 @@ namespace FormattazioneSpellForMarkdownProject{
             return Console.ReadLine() ?? string.Empty;
         }
 
-        public static bool GetBool(string s)
+        public static bool GetBool(string s = "")
         {
-            Console.WriteLine(s);
-            return GetBool();
-        }
-
-        public static bool GetBool()
-        {
-            try
+            if(!string.IsNullOrEmpty(s))
             {
-                return Boolean.Parse(GetString());
+                WriteColored(s, ConsoleColor.Blue);
             }
-            catch (FormatException)
+            var key = Console.ReadKey(true);
+            if (key.Key == ConsoleKey.T)
             {
-                Console.Error.WriteLine("devi inserire un valore booleano\t(true per sì e false per no)");
+                return true;
+            }else if(key.Key == ConsoleKey.F)
+            {
+                return false;
+            }
+            else
+            {
+                Console.Error.WriteLine("devi inserire un valore booleano\t(T per sì F per no)");
                 return GetBool();
             }
         }
@@ -297,18 +299,13 @@ namespace FormattazioneSpellForMarkdownProject{
 
         public static int GetInt(string s = "")
         {
-            try
+            if(int.TryParse(GetString(s), out int result))
             {
-                return Int32.Parse(GetString(s));
+                return result;
             }
-            catch (FormatException)
+            else
             {
                 Console.Error.WriteLine("devi inserire un numero intero");
-                return GetInt();
-            }
-            catch (OverflowException)
-            {
-                Console.Error.WriteLine("devi inserire un numero intero di massimo 9 cifre");
                 return GetInt();
             }
         }

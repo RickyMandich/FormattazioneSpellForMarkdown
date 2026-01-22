@@ -211,6 +211,7 @@ namespace FormattazioneSpellForMarkdownProject
             if (!byReference)
             {
                 string backupFilePath = Input.SanitizePath($"{Program.config.Get("BACKUP_PATH")}data/incantesimi/{fileName}.md");
+                Directory.CreateDirectory(Input.SanitizePath($"{Program.config.Get("BACKUP_PATH")}data/incantesimi"));
                 try
                 {
                     writer = new StreamWriter(backupFilePath);
