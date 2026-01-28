@@ -2,7 +2,7 @@
   "profiles": {
     "Format": {
       "commandName": "Project",
-      "commandLineArgs": 'spell add'
+      "commandLineArgs": "help"
     }
   }
 }
