@@ -4,10 +4,8 @@ using System;
 internal class Program
 {
     public static List<Spell> spells = new();
-    public static Input.Settings config = new();
     static void Main(string[] args)
     {
-
         Dictionary<string, Action<string[]>> commands = new()
         {
             { "spell", Spell },
